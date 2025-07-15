@@ -4,7 +4,7 @@ import LandingPage from './pages/LandingPage.jsx';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
+    return localStorage.getItem("theme") === "dark" || window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
   useEffect(() => {
