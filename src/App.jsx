@@ -5,7 +5,11 @@ import { ThemeProvider } from './context/ThemeContext.jsx';
 import { LenisProvider } from './context/LenisContext.jsx'; // Correct import
 
 import LandingPage from './pages/LandingPage.jsx';
-import LoginPage from './pages/LoginPage.jsx'; // Import LoginPage if needed 
+import LoginPage from './pages/LoginPage.jsx';
+import FeaturesPage from './pages/FeaturesPage.jsx';
+import ContactPage from './pages/ContactPage.jsx';
+
+import './index.css'; // Ensure global styles are applied
 
 export default function App() {
   // The useLenis hook logic is now encapsulated within LenisProvider
@@ -19,7 +23,8 @@ export default function App() {
           <Routes>
             <Route path="/" element={<LandingPage />} />
             <Route path="/login" element={<LoginPage />} />
-            {/* Add other routes as needed */}
+            <Route path="/features" element={<FeaturesPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </LenisProvider>
       </ThemeProvider>
