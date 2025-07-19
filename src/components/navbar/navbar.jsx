@@ -1,28 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react"; // Removed useEffect, useRef as they are no longer needed here for Lenis
 import { useNavigate, useLocation } from "react-router-dom";
 import { Menu, X, Crosshair } from "lucide-react";
-import Lenis from "lenis";
 import DarkModeToggle from "../Darkmode/DarkModeToggle";
+import { useLenis } from "../../context/LenisContext"; // Import useLenis from your context
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
-    const lenisRef = useRef(null);
 
-    useEffect(() => {
-        lenisRef.current = new Lenis();
-        function raf(time) {
-            lenisRef.current?.raf(time);
-            requestAnimationFrame(raf);
-        }
-        requestAnimationFrame(raf);
-    }, []);
+    // Get the single Lenis instance from the context.
+    // This assumes LenisProvider wraps your application higher up in the tree.
+    const lenis = useLenis();
 
     const handleLogoClick = () => {
         if (location.pathname === "/") {
-            lenisRef.current?.scrollTo(0);
+            // If on the home page, scroll to top using the Lenis instance from context
+            // Use optional chaining (?) because 'lenis' might be null during initial render
+            // if the LenisProvider hasn't fully initialized yet, though less likely with useEffect.
+            lenis?.scrollTo(0);
         } else {
+            // Otherwise, navigate to the home page
             navigate("/");
         }
     };
@@ -63,9 +61,12 @@ const Navbar = () => {
                 {/* Actions: Dark mode + Try Now */}
                 <div className="flex items-center gap-4 relative group">
                     <DarkModeToggle />
+                    {/* Removed the duplicate tooltip. DarkModeToggle already has its own. */}
+                    {/*
                     <span className="absolute -top-10 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 group-hover:-translate-y-1 scale-95 group-hover:scale-100 transition-all duration-300 ease-in-out text-xs text-white bg-black/80 px-2 py-1 rounded-md shadow-lg whitespace-nowrap">
                         Toggle Theme
                     </span>
+                    */}
 
                     <button
                         onClick={() => navigate("/login")}

@@ -1,6 +1,14 @@
+/* src/index.css */
+
 @import "tailwindcss";
 
-
+/*
+ * IMPORTANT: For Tailwind CSS v4 with `darkMode: 'class'`,
+ * you need to explicitly define the `dark` variant using @custom-variant.
+ * This tells Tailwind to generate dark mode styles based on the presence
+ * of the `.dark` class on an ancestor element (like <html>).
+ */
+@custom-variant dark (&:where(.dark, .dark *));
 
 /* Global styles */
 body,

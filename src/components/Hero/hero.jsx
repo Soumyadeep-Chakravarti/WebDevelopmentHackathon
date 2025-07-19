@@ -1,8 +1,5 @@
 import { motion } from 'framer-motion';
-import { section } from 'framer-motion/client';
 import { useNavigate } from "react-router-dom";
-
-
 
 const fadeUp = {
     initial: { opacity: 0, y: 40 },
@@ -13,7 +10,8 @@ const transition = { duration: 0.8, ease: 'easeOut' };
 
 const Hero = () => {
     const navigate = useNavigate();
-    return (        
+    return (
+        // If you want to animate the section: <motion.section {...yourMotionProps}>
         <section className="flex flex-col items-center justify-center w-screen min-h-screen bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-900 text-gray-900 dark:text-white transition-colors duration-500 px-4 sm:px-6 md:px-8">
             <motion.div
                 className="text-center"

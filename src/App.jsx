@@ -1,28 +1,25 @@
-import React, { useEffect, useState } from 'react';
+// src/App.jsx
+import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import LandingPage from './pages/LandingPage.jsx';
+import { ThemeProvider } from './context/ThemeContext.jsx';
+// Import the new LenisProvider
+import { LenisProvider } from './context/LenisContext.jsx'; // Correct import
 
 export default function App() {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark" || window.matchMedia("(prefers-color-scheme: dark)").matches;
-  });
-
-  useEffect(() => {
-    const html = document.documentElement;
-    if (darkMode) {
-      html.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      html.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
+  // The useLenis hook logic is now encapsulated within LenisProvider
+  // No need to call useLenis() directly here anymore unless you need the instance in App.jsx itself.
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage darkMode={darkMode} setDarkMode={setDarkMode} />} />
-      </Routes>
+      <ThemeProvider>
+        {/* Wrap your app with the LenisProvider */}
+        <LenisProvider>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+          </Routes>
+        </LenisProvider>
+      </ThemeProvider>
     </BrowserRouter>
   );
 }
