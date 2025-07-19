@@ -167,14 +167,6 @@ const ContactPage = ({ setShowLogin }) => {
                                     <p>+1 (123) 456-7890</p>
                                 </div>
                             </div>
-                            <div className="flex items-center gap-4">
-                                <MapPin size={24} className="text-accent" />
-                                <div>
-                                    <h3 className="font-semibold text-text-primary">Our Office</h3>
-                                    <p>123 ByteOps Avenue, Suite 456</p>
-                                    <p>Tech City, TX 78701, USA</p>
-                                </div>
-                            </div>
                         </div>
                     </motion.div>
                 </motion.section>
