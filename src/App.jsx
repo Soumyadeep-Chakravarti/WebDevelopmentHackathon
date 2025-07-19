@@ -1,10 +1,11 @@
 // src/App.jsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage.jsx';
 import { ThemeProvider } from './context/ThemeContext.jsx';
-// Import the new LenisProvider
 import { LenisProvider } from './context/LenisContext.jsx'; // Correct import
+
+import LandingPage from './pages/LandingPage.jsx';
+import LoginPage from './pages/LoginPage.jsx'; // Import LoginPage if needed 
 
 export default function App() {
   // The useLenis hook logic is now encapsulated within LenisProvider
@@ -17,6 +18,8 @@ export default function App() {
         <LenisProvider>
           <Routes>
             <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            {/* Add other routes as needed */}
           </Routes>
         </LenisProvider>
       </ThemeProvider>
