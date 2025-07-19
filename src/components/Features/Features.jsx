@@ -74,7 +74,7 @@ const Features = () => {
                     Explore what makes our platform stand out and how it can benefit your daily tasks.
                 </motion.p>
 
-                <div className="flex flex-col gap-32"> {/* Increased gap from gap-24 to gap-32 */}
+                <div className="flex flex-col gap-64"> 
                     {features.map((feature, index) => (
                         <FeatureCard key={index} feature={feature} index={index} />
                     ))}
@@ -104,7 +104,7 @@ const FeatureCard = ({ feature, index }) => {
     // Horizontal transformation based on index (odd/even for left/right slide)
     const x = useTransform(
         scrollYProgress,
-        [0, 0.2, 0.8, 1],
+        [0, 0.25, 0.75, 1],
         index % 2 === 0 ? [-300, 0, 0, 300] : [300, 0, 0, -300] // Slide in from left/right, then out
     );
 

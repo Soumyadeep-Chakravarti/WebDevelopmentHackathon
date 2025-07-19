@@ -6,6 +6,7 @@ import Hero from '../components/Hero/hero';
 import CTA from '../components/CTA/CTA'; // Import CTA component
 import Features from '../components/Features/Features';
 import Footer from '../components/Footer/Footer';
+import Testimonials from '../components/Testimonials/Testimonials'; // Import Testimonials component
 
 // LandingPage now accepts setShowLogin as a prop from App.jsx
 const LandingPage = ({ setShowLogin }) => {
@@ -17,6 +18,7 @@ const LandingPage = ({ setShowLogin }) => {
                 <Hero/>
                 <CTA setShowLogin={setShowLogin} /> {/* Pass setShowLogin to CTA */}
                 <Features />
+                <Testimonials /> {/* Add Testimonials component */}
                 <Footer />
             </main>
         </div>
