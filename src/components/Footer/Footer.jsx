@@ -15,22 +15,30 @@ const Footer = () => {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.5 }}
-            variants={footerVariants}
+            variants={footerVariants} // Apply variants to the main footer container
         >
             <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-                <div className="mb-6 md:mb-0">
+                {/* Apply motion to the first content block */}
+                <motion.div
+                    className="mb-6 md:mb-0"
+                    variants={footerVariants} // Apply the same variants for staggered effect
+                >
                     <h3 className="text-2xl font-bold text-accent-dark flex items-center justify-center md:justify-start gap-2 mb-2">
                         <Crosshair size={24} className="relative top-[1px]" />
                         <span>Team ByteOps</span>
                     </h3>
                     <p className="text-sm">&copy; {new Date().getFullYear()} All rights reserved.</p>
-                </div>
+                </motion.div>
 
-                <div className="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-4 text-sm">
+                {/* Apply motion to the second content block (navigation links) */}
+                <motion.div
+                    className="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-4 text-sm"
+                    variants={footerVariants} // Apply the same variants for staggered effect
+                >
                     <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
                     <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
                     <a href="#" className="hover:text-primary transition-colors">Contact Us</a>
-                </div>
+                </motion.div>
             </div>
         </motion.footer>
     );

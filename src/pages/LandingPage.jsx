@@ -1,26 +1,25 @@
-// src/pages/LandingPage.jsx
+// ./src/pages/LandingPage.jsx
 
 import React from 'react';
 import Navbar from '../components/navbar/navbar';
-import Hero from '../components/Hero/hero'; 
-import CTA from '../components/CTA/CTA'; // Import CTA component
-import Features from '../components/Features/Features';
+import Hero from '../components/Hero/hero';
+import Features from '../components/LandingFeatures/Features';
+import CTA from '../components/CTA/CTA';
+import Testimonials from '../components/Testimonials/Testimonials';
 import Footer from '../components/Footer/Footer';
-import Testimonials from '../components/Testimonials/Testimonials'; // Import Testimonials component
 
-// LandingPage now accepts setShowLogin as a prop from App.jsx
-const LandingPage = ({ setShowLogin }) => {
+const LandingPage = ({ setShowLogin }) => { // Accept setShowLogin prop
     return (
-        <div className="w-full min-h-screen overflow-hidden">
-            {/* Pass setShowLogin to Navbar so the "Try Now" button can open the Login overlay */}
-            <Navbar setShowLogin={setShowLogin} />
-            <main>
+        <div className="w-full min-h-screen overflow-hidden text-text-primary">
+            <Navbar setShowLogin={setShowLogin} /> {/* Pass setShowLogin */}
+            {/* Added 'relative' to main for Framer Motion context */}
+            <main className="relative">
                 <Hero/>
-                <CTA setShowLogin={setShowLogin} /> {/* Pass setShowLogin to CTA */}
-                <Features />
-                <Testimonials /> {/* Add Testimonials component */}
-                <Footer />
+                <Features/>
+                <Testimonials/>
+                <CTA setShowLogin={setShowLogin} />
             </main>
+            <Footer/>
         </div>
     );
 };
