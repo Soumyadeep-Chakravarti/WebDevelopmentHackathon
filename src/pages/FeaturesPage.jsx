@@ -44,7 +44,7 @@ const FeaturesPage = ({ setShowLogin }) => { // Accept setShowLogin prop for Nav
                 </section>
 
                 {/* Detailed Features List */}
-                <section className="px-4 sm:px-6 md:px-8 pb-20 flex flex-col gap-24">
+                <section className="px-4 sm:px-6 md:px-8 pb-20 flex flex-col gap-45">
                     {/* Ensure featuresData is an array before mapping */}
                     {featuresData && featuresData.map((feature, index) => (
                         // Add a check for 'feature' being defined before rendering DetailedFeatureCard

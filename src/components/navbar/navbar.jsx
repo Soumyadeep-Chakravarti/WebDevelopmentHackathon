@@ -16,6 +16,7 @@ const Navbar = () => {
             lenis?.scrollTo(0);
         } else {
             navigate("/");
+            window.scrollTo(0);
         }
     };
 

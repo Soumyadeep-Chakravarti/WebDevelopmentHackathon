@@ -1,6 +1,5 @@
 // ./src/pages/LandingPage.jsx
 
-import React from 'react';
 import Navbar from '../components/navbar/navbar';
 import Hero from '../components/Hero/hero';
 import Features from '../components/LandingFeatures/Features';

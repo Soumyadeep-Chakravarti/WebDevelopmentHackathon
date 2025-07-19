@@ -16,7 +16,7 @@ const DetailedFeatureCard = ({ feature, index }) => {
     const x = useTransform(
         scrollYProgress,
         [0, 0.2, 0.8, 1],
-        index % 2 === 0 ? [-100, 0, 0, 100] : [100, 0, 0, -100] // Reduced from +/-200 to +/-100
+        index % 2 === 0 ? [-200, 0, 0, 200] : [200, 0, 0, -200] // Reduced from +/-200 to +/-100
     );
 
     // Fade in/out
