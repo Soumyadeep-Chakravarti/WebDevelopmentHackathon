@@ -19,7 +19,7 @@ const DarkModeToggle = () => {
             </button>
 
             {/* Tooltip */}
-            <span className="absolute -top-10 left-1/2 transform -translate-x-1/2 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 ease-in-out text-xs text-white bg-black/80 px-2 py-1 rounded-md shadow-lg whitespace-nowrap pointer-events-none">
+            <span className="absolute bottom-08 left-1/2 transform -translate-x-1/2 translate-y-10 opacity-0 scale-95 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300 ease-in-out text-xs text-white bg-black/80 px-2 py-1 rounded-md shadow-lg whitespace-nowrap pointer-events-none">
                 {isDark ? "Light Mode" : "Dark Mode"}
             </span>
         </div>
