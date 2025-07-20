@@ -4,7 +4,7 @@ import { Menu, X, Crosshair } from "lucide-react";
 import DarkModeToggle from "../Darkmode/DarkModeToggle";
 import { useLenis } from "../../context/LenisContext";
 
-const Navbar = () => {
+const Navbar = ({ setShowLogin }) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
@@ -57,7 +57,7 @@ const Navbar = () => {
                 <div className="flex items-center gap-4 relative group">
                     <DarkModeToggle />
                     <button
-                        onClick={() => navigate("/login")}
+                        onClick={() => setShowLogin(true)} // Assuming setShowLogin is passed down from App.jsx")}
                         className="bg-accent-dark hover:bg-secondary-hover text-white font-medium py-3 px-6 rounded-xl transition duration-300 shadow-md hover:shadow-[0_0_30px_10px_var(--color-secondary-hover)]" // Using new theme colors
                     >
                         Try Now
