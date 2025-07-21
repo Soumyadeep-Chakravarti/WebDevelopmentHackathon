@@ -1,28 +1,37 @@
 // src/App.jsx
-import React, { useState } from 'react'; // Make sure useState is imported here
+import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import LandingPage from './pages/LandingPage.jsx';
-import FeaturesPage from './pages/FeaturesPage.jsx';
-import ContactPage from './pages/ContactPage.jsx';
+
+const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
+const FeaturesPage = lazy(() => import('./pages/FeaturesPage.jsx'));
+const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
+const Login = lazy(() => import('./components/Login/Login.jsx'));
+const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx')); // <--- Ensure this import is here
+
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { LenisProvider } from './context/LenisContext.jsx';
-import Login from './components/login/login.jsx'; // Import the Login component
 
 export default function App() {
-  // This is where setShowLogin is "made" - it's the setter function for the showLogin state
   const [showLogin, setShowLogin] = useState(false);
 
   return (
     <BrowserRouter>
       <ThemeProvider>
         <LenisProvider>
-          <Routes>
-            <Route path="/" element={<LandingPage setShowLogin={setShowLogin} />} />
-            <Route path="/features" element={<FeaturesPage setShowLogin={setShowLogin} />} />
-            <Route path="/contact" element={<ContactPage setShowLogin={setShowLogin} />} />
-          </Routes>
-          {/* Here, setShowLogin is passed as a prop to the Login component */}
-          {showLogin && <Login setShowLogin={setShowLogin} />}
+          <Suspense fallback={<div className="flex justify-center items-center min-h-screen text-text-primary">Loading application...</div>}>
+            <Routes>
+              <Route path="/" element={<LandingPage setShowLogin={setShowLogin} />} />
+              <Route path="/features" element={<FeaturesPage setShowLogin={setShowLogin} />} />
+              <Route path="/contact" element={<ContactPage setShowLogin={setShowLogin} />} />
+              <Route path="/login" element={<Login setShowLogin={setShowLogin} isStandalonePage={true} />} />
+              <Route path="/signup" element={<SignUpPage />} /> {/* <--- Ensure this route is here */}
+            </Routes>
+            {!window.location.pathname.includes('/login') && showLogin && (
+              <Suspense fallback={<div>Loading login...</div>}>
+                <Login setShowLogin={setShowLogin} isStandalonePage={false} />
+              </Suspense>
+            )}
+          </Suspense>
         </LenisProvider>
       </ThemeProvider>
     </BrowserRouter>

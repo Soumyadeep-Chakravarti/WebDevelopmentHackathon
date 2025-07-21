@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import Navbar from '../components/navbar/navbar';
-import Footer from '../components/Footer/Footer';
+import Navbar from '../components/Navbar/Navbar'; // Corrected import path
+import Footer from '../components/Footer/Footer'; // Corrected import path
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -28,7 +28,7 @@ const itemVariants = {
     },
 };
 
-const ContactPage = ({ setShowLogin }) => {
+const ContactPage = ({ setShowLogin }) => { // Accept setShowLogin prop
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -51,7 +51,7 @@ const ContactPage = ({ setShowLogin }) => {
 
     return (
         <div className="w-full min-h-screen bg-background text-text-primary">
-            <Navbar setShowLogin={setShowLogin} />
+            <Navbar setShowLogin={setShowLogin} /> {/* Pass setShowLogin to Navbar */}
 
             <main className="relative w-full py-20 overflow-x-hidden">
                 {/* Contact Page Header */}
@@ -165,6 +165,14 @@ const ContactPage = ({ setShowLogin }) => {
                                 <div>
                                     <h3 className="font-semibold text-text-primary">Call Us</h3>
                                     <p>+1 (123) 456-7890</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-4">
+                                <MapPin size={24} className="text-accent" />
+                                <div>
+                                    <h3 className="font-semibold text-text-primary">Our Office</h3>
+                                    <p>123 ByteOps Avenue, Suite 456</p>
+                                    <p>Tech City, TX 78701, USA</p>
                                 </div>
                             </div>
                         </div>

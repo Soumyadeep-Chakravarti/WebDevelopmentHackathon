@@ -38,7 +38,9 @@ const CTA = ({ setShowLogin }) => { // Accept setShowLogin prop
                 </p>
                 <button
                     onClick={handleCTAClick}
-                    className="px-10 py-4 bg-white text-primary font-bold rounded-full shadow-lg  hover:bg-gray-100 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/50"
+                    className="px-10 py-4 bg-white text-primary font-bold rounded-full shadow-lg
+                               hover:bg-gray-100 transition-all duration-300 ease-in-out
+                               transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white/50"
                 >
                     Get Started Now
                 </button>

@@ -1,7 +1,7 @@
 // src/pages/FeaturesPage.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '../components/navbar/navbar';
+import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer'; // Correct import path for Footer
 import DetailedFeatureCard from '../components/DetailedFeatureCard/DetailedFeatureCard';
 import { featuresData } from '../data/featuresData'; // Import centralized data

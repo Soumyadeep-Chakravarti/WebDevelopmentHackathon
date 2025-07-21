@@ -1,6 +1,5 @@
 // src/components/Footer/Footer.jsx
 import React from 'react';
-import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from 'framer-motion';
 import { Crosshair } from 'lucide-react';
 
@@ -10,19 +9,6 @@ const footerVariants = {
 };
 
 const Footer = () => {
-    // Using useNavigate and useLocation for potential future navigation needs
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const handleLogoClick = () => {
-        if (location.pathname === "/") {
-            window.scrollTo(0);
-        } else {
-            navigate("/");
-            window.scrollTo(0);
-        }
-    };
-
     return (
         <motion.footer
             className="py-12 px-4 sm:px-6 md:px-8 bg-card-background border-t border-border-color/50 text-text-secondary"
@@ -37,10 +23,7 @@ const Footer = () => {
                     className="mb-6 md:mb-0"
                     variants={footerVariants} // Apply the same variants for staggered effect
                 >
-                    <h3 
-                    onClick={handleLogoClick}
-                    className="text-2xl font-bold text-accent-dark flex items-center justify-center md:justify-start gap-2 mb-2"
-                    >
+                    <h3 className="text-2xl font-bold text-accent-dark flex items-center justify-center md:justify-start gap-2 mb-2">
                         <Crosshair size={24} className="relative top-[1px]" />
                         <span>Team ByteOps</span>
                     </h3>
@@ -52,9 +35,9 @@ const Footer = () => {
                     className="flex flex-wrap justify-center md:justify-end gap-x-8 gap-y-4 text-sm"
                     variants={footerVariants} // Apply the same variants for staggered effect
                 >
-                    <a onClick={() => navigate("/privacy-policy")} className="hover:text-primary transition-colors">Privacy Policy</a>
-                    <a onClick={() => navigate("/terms-of-service")} className="hover:text-primary transition-colors">Terms of Service</a>
-                    <a onClick={() => navigate("/contact")} className="hover:text-primary transition-colors">Contact Us</a>
+                    <a onClick={() => window.open('/privacy-policy', '_blank')} className="hover:text-primary transition-colors">Privacy Policy</a>
+                    <a onClick={() => window.open('/terms-of-service', '_blank')} className="hover:text-primary transition-colors">Terms of Service</a>
+                    <a onClick={() => window.open('/contact', '_blank')} className="hover:text-primary transition-colors">Contact Us</a>
                 </motion.div>
             </div>
         </motion.footer>
