@@ -108,10 +108,9 @@ const SignUpForm = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 20 }}
-            className={`p-3 rounded-lg text-sm mb-4 ${
-              messageType === 'success' ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' :
-              'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
-            }`}
+            className={`p-3 rounded-lg text-sm mb-4 ${messageType === 'success' ? 'bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-100' :
+                'bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100'
+              }`}
           >
             {message}
           </motion.div>
@@ -180,12 +179,12 @@ const SignUpForm = () => {
       >
         <Lock size={20} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-secondary" />
         <input
-            type={showPassword ? 'text' : 'password'}
-            className='outline-none text-sm h-8 w-full bg-transparent'
-            placeholder='Confirm Password'
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
+          type={showPassword ? 'text' : 'password'}
+          className='outline-none text-sm h-8 w-full bg-transparent'
+          placeholder='Confirm Password'
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          required
         />
       </motion.div>
 
