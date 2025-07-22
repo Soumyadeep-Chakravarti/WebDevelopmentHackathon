@@ -2,14 +2,17 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
+// Lazy load your page components
 const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage.jsx'));
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
 const Login = lazy(() => import('./components/Login/Login.jsx'));
-const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx')); // <--- Ensure this import is here
+const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx')); // Lazy load SignUpPage
 
+// Import Context Providers
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { LenisProvider } from './context/LenisContext.jsx';
+
 
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -18,15 +21,18 @@ export default function App() {
     <BrowserRouter>
       <ThemeProvider>
         <LenisProvider>
+          {/* Use Suspense to wrap your Routes. A fallback UI will be shown while components load. */}
           <Suspense fallback={<div className="flex justify-center items-center min-h-screen text-text-primary">Loading application...</div>}>
             <Routes>
               <Route path="/" element={<LandingPage setShowLogin={setShowLogin} />} />
               <Route path="/features" element={<FeaturesPage setShowLogin={setShowLogin} />} />
               <Route path="/contact" element={<ContactPage setShowLogin={setShowLogin} />} />
               <Route path="/login" element={<Login setShowLogin={setShowLogin} isStandalonePage={true} />} />
-              <Route path="/signup" element={<SignUpPage />} /> {/* <--- Ensure this route is here */}
+              {/* CORRECTED: Pass setShowLogin to SignUpPage */}
+              <Route path="/signup" element={<SignUpPage setShowLogin={setShowLogin} />} />
             </Routes>
-            {!window.location.pathname.includes('/login') && showLogin && (
+            {/* Render Login as an overlay ONLY if showLogin is true AND it's not a standalone page route */}
+            {!window.location.pathname.includes('/login') && !window.location.pathname.includes('/signup') && showLogin && (
               <Suspense fallback={<div>Loading login...</div>}>
                 <Login setShowLogin={setShowLogin} isStandalonePage={false} />
               </Suspense>

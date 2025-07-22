@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
-import Navbar from '../components/Navbar/Navbar'; // Corrected import path
-import Footer from '../components/Footer/Footer'; // Corrected import path
+import Navbar from '../components/Navbar/Navbar'; // Corrected import path for Navbar
+import Footer from '../components/Footer/Footer'; // Corrected import path for Footer
 
 const containerVariants = {
     hidden: { opacity: 0 },

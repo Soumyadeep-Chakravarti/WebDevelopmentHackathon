@@ -5,7 +5,7 @@ import { X } from 'lucide-react'; // Only X for the close button
 import { motion } from 'framer-motion'; // Only motion for page-level animations
 import Navbar from '../components/Navbar/Navbar';
 import Footer from '../components/Footer/Footer';
-import SignUpForm from '../components/SignUp/SignUpForm'; // Import the new SignUpForm component
+import SignUpForm from '../components/SignUp/SignUpForm'; // Corrected import path for SignUpForm
 
 // Animation variants for the animated background section (for the text side)
 const animationSectionVariants = {
@@ -21,13 +21,15 @@ const animationSectionVariants = {
     },
 };
 
-const SignUpPage = () => {
+// CORRECTED: SignUpPage now correctly accepts setShowLogin as a destructured prop
+const SignUpPage = ({ setShowLogin }) => {
     const navigate = useNavigate();
 
     return (
         <div className="w-full min-h-screen bg-background text-text-primary flex flex-col">
-            <Navbar />
-            <main className="flex-grow flex flex-col md:flex-row justify-center items-center p-4 md:p-8 relative overflow-hidden">
+            {/* CORRECTED: Pass setShowLogin to Navbar */}
+            <Navbar setShowLogin={setShowLogin} />
+            <main className="flex-grow flex flex-col md:flex-row justify-center items-center p-4 md:p-8 relative"> {/* REMOVED overflow-hidden from main */}
 
                 {/* Full-blown Blurred Animated Background */}
                 <div className="absolute inset-0 z-0 bg-gradient-to-br from-gradient-hero-from to-gradient-hero-to filter blur-lg">
@@ -42,8 +44,8 @@ const SignUpPage = () => {
                 {/* Animated Section (Left side on desktop) - Now on top of the blurred background */}
                 <motion.div
                     className="relative z-10 hidden md:flex flex-col justify-center items-center w-full md:w-1/2 min-h-[300px] md:min-h-[500px]
-                     bg-card-background/70 rounded-2xl shadow-xl p-8 backdrop-blur-sm
-                     text-text-primary text-center mr-0 md:mr-8 mb-8 md:mb-0 border border-border-color/50"
+                               bg-card-background/70 rounded-2xl shadow-xl p-8 backdrop-blur-sm
+                               text-text-primary text-center mr-0 md:mr-8 mb-8 md:mb-0 border border-border-color/50"
                     initial="hidden"
                     animate="visible"
                     variants={animationSectionVariants}

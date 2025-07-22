@@ -2,6 +2,8 @@
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  GoogleAuthProvider, // Import GoogleAuthProvider
+  signInWithPopup,    // Import signInWithPopup
   signOut,
   onAuthStateChanged
 } from 'firebase/auth';
@@ -28,6 +30,41 @@ export const firebaseSignIn = async (email, password) => {
     return { success: false, error: error.message };
   }
 };
+
+export const firebaseGoogleSignIn = async () => {
+  const provider = new GoogleAuthProvider();
+  // You can add scopes if needed, e.g., provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  try {
+    const result = await signInWithPopup(auth, provider); // Use signInWithPopup
+    console.log("User signed in with Google:", result.user);
+    return { success: true, user: result.user };
+  } catch (error) {
+    console.error("Error signing in with Google:", error.message);
+    // Handle specific error codes for better user feedback
+    if (error.code === 'auth/popup-closed-by-user') {
+      return { success: false, error: 'Google sign-in popup was closed.' };
+    }
+    return { success: false, error: error.message };
+  }
+};
+
+export const firebaseGoogleSignUp = async () => {
+  const provider = new GoogleAuthProvider();
+  // You can add scopes if needed, e.g., provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  try {
+    const result = await signInWithPopup(auth, provider); // Use signInWithPopup
+    console.log("User signed up with Google:", result.user);
+    return { success: true, user: result.user };
+  } catch (error) {
+    console.error("Error signing up with Google:", error.message);
+    // Handle specific error codes for better user feedback
+    if (error.code === 'auth/popup-closed-by-user') {
+      return { success: false, error: 'Google sign-up popup was closed.' };
+    }
+    return { success: false, error: error.message };
+  }
+};
+
 
 export const firebaseSignOut = async () => {
   try {

@@ -1,23 +1,21 @@
 // src/pages/LandingPage.jsx
 
 import React from 'react';
-import Navbar from '../components/Navbar/Navbar'; // Corrected import path
-import Hero from '../components/Hero/Hero'; // Corrected import path
-import Features from '../components/LandingFeatures/Features'; // Corrected import path
-import CTA from '../components/CTA/CTA'; // Corrected import path
-import Testimonials from '../components/Testimonials/Testimonials'; // Corrected import path
-import Footer from '../components/Footer/Footer'; // Corrected import path
+import Navbar from '../components/Navbar/Navbar';
+import Hero from '../components/Hero/Hero';
+import Features from '../components/LandingFeatures/Features';
+import CTA from '../components/CTA/CTA';
+import Testimonials from '../components/Testimonials/Testimonials';
+import Footer from '../components/Footer/Footer';
 
 // LandingPage now accepts setShowLogin as a prop from App.jsx
 const LandingPage = ({ setShowLogin }) => {
     return (
-        // The background color is now handled by the body in index.css
         <div
             className="relative w-full min-h-screen text-text-primary"
-            // Removed style={{ backgroundImage: ... }} to rely on global background
         >
             {/* Navbar is fixed, so it floats above content */}
-            <Navbar setShowLogin={setShowLogin} />
+            <Navbar setShowLogin={setShowLogin} /> {/* Pass setShowLogin to Navbar */}
 
             {/* Main content area - Added 'relative' for Framer Motion children */}
             <main className="relative w-full">

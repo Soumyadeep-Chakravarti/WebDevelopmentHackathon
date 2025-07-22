@@ -1,4 +1,4 @@
-// src/components/Features/Features.jsx
+// src/components/LandingFeatures/Features.jsx
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Zap, Shield, Cloud } from 'lucide-react';
@@ -7,7 +7,7 @@ import { Zap, Shield, Cloud } from 'lucide-react';
 import PerformanceDescription from './descriptions/PerformanceDescription';
 import SecurityDescription from './descriptions/SecurityDescription';
 import CloudIntegrationDescription from './descriptions/CloudIntegrationDescription';
-import ScalableArchitectureDescription from './descriptions/ScalableArchitectureDescription';
+import ScalableArchitecturreDescription from './descriptions/ScalableArchitectureDescription';
 import UserInterfaceDescription from './descriptions/UserInterfaceDescription';
 import SupportDescription from './descriptions/SupportDescription';
 
@@ -31,7 +31,7 @@ const Features = () => {
         {
             icon: <Zap size={36} className="text-primary" />,
             title: "Scalable Architecture",
-            description: <ScalableArchitectureDescription />, // Now a component
+            description: <ScalableArchitecturreDescription />, // Now a component
         },
         {
             icon: <Shield size={36} className="text-secondary" />,
@@ -52,7 +52,7 @@ const Features = () => {
     };
 
     return (
-        <section className="py-20 px-4 sm:px-6 md:px-8 bg-background text-text-primary overflow-hidden">
+        <section className="py-20 px-4 sm:px-6 md:px-8 bg-background text-text-primary"> {/* REMOVED overflow-hidden */}
             <div className="max-w-6xl mx-auto text-center">
                 <motion.h2
                     className="text-4xl sm:text-5xl font-bold mb-4"
@@ -74,7 +74,7 @@ const Features = () => {
                     Explore what makes our platform stand out and how it can benefit your daily tasks.
                 </motion.p>
 
-                <div className="flex flex-col gap-64"> 
+                <div className="relative flex flex-col gap-32"> {/* Increased gap from gap-24 to gap-32 */}
                     {features.map((feature, index) => (
                         <FeatureCard key={index} feature={feature} index={index} />
                     ))}
@@ -104,7 +104,7 @@ const FeatureCard = ({ feature, index }) => {
     // Horizontal transformation based on index (odd/even for left/right slide)
     const x = useTransform(
         scrollYProgress,
-        [0, 0.25, 0.75, 1],
+        [0, 0.2, 0.8, 1],
         index % 2 === 0 ? [-300, 0, 0, 300] : [300, 0, 0, -300] // Slide in from left/right, then out
     );
 
