@@ -5,11 +5,13 @@ import Lenis from 'lenis'; // Assuming Lenis is installed
 const LenisContext = createContext(null); // Initialize with null
 
 export const LenisProvider = ({ children }) => {
+    // Use useState to hold the Lenis instance, allowing re-renders when it's ready
     const [lenisInstance, setLenisInstance] = useState(null);
-    const animationFrameIdRef = useRef(null);
+    const animationFrameIdRef = useRef(null); // Ref to store the requestAnimationFrame ID for cleanup
 
     useEffect(() => {
-        // Ensure Lenis is initialized only once and targets the document element
+        // Only create a new Lenis instance if one doesn't already exist
+        // and ensure it's attached to the document.documentElement (html element)
         if (!lenisInstance) {
             const lenis = new Lenis({
                 wrapper: document.documentElement, // Explicitly set wrapper to html element
@@ -18,30 +20,40 @@ export const LenisProvider = ({ children }) => {
                 duration: 1.2, // Default scroll duration
                 easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Example easing
             });
-            setLenisInstance(lenis);
+            setLenisInstance(lenis); // Update state with the new instance
+
+            // IMPORTANT FIX: Call resize after initialization to ensure Lenis calculates scroll height
+            lenis.resize();
 
             const raf = (time) => {
                 lenis.raf(time);
-                animationFrameIdRef.current = requestAnimationFrame(raf);
+                // Continue the animation loop only if the Lenis instance exists.
+                if (lenis) { // Use the local 'lenis' variable here
+                    animationFrameIdRef.current = requestAnimationFrame(raf);
+                }
             };
 
+            // Start the initial animation loop and store its ID
             animationFrameIdRef.current = requestAnimationFrame(raf);
         }
 
+        // Cleanup function: runs when the component unmounts
         return () => {
+            // Cancel the animation frame if its ID exists in the ref
             if (animationFrameIdRef.current) {
                 cancelAnimationFrame(animationFrameIdRef.current);
-                animationFrameIdRef.current = null;
+                animationFrameIdRef.current = null; // Clear the ref
             }
-            if (lenisInstance) {
+            // Destroy the Lenis instance if it exists
+            if (lenisInstance) { // Use the state variable here for cleanup
                 lenisInstance.destroy();
-                setLenisInstance(null);
+                setLenisInstance(null); // Clear the state
             }
         };
     }, []); // Empty dependency array: ensures this effect runs ONLY ONCE on mount
 
     return (
-        <LenisContext.Provider value={lenisInstance}>
+        <LenisContext.Provider value={lenisInstance}> {/* Provide the state value */}
             {children}
         </LenisContext.Provider>
     );
@@ -49,5 +61,9 @@ export const LenisProvider = ({ children }) => {
 
 export const useLenis = () => {
     const context = useContext(LenisContext);
+    // Optional: Add a check if useLenis is used outside a LenisProvider
+    // if (context === null) {
+    //   throw new Error('useLenis must be used within a LenisProvider');
+    // }
     return context;
 };

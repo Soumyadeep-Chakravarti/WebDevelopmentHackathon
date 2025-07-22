@@ -7,7 +7,8 @@ const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage.jsx'));
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
 const Login = lazy(() => import('./components/Login/Login.jsx'));
-const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx')); // Lazy load SignUpPage
+const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx'));
+const LearnMorePage = lazy(() => import('./pages/LearnMorePage.jsx'));
 
 // Import Context Providers
 import { ThemeProvider } from './context/ThemeContext.jsx';
@@ -30,6 +31,7 @@ export default function App() {
               <Route path="/login" element={<Login setShowLogin={setShowLogin} isStandalonePage={true} />} />
               {/* CORRECTED: Pass setShowLogin to SignUpPage */}
               <Route path="/signup" element={<SignUpPage setShowLogin={setShowLogin} />} />
+              <Route path="/learn-more" element={<LearnMorePage setShowLogin={setShowLogin} />} />
             </Routes>
             {/* Render Login as an overlay ONLY if showLogin is true AND it's not a standalone page route */}
             {!window.location.pathname.includes('/login') && !window.location.pathname.includes('/signup') && showLogin && (
