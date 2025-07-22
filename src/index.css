@@ -74,7 +74,7 @@ html {
   /* Explicitly hide overflow on html, body to let Lenis take full control */
 
   /* dont touch this */
-  
+  /* overflow: hidden; This is key for Lenis to work as the sole scroll controller */
 }
 
 #root {
