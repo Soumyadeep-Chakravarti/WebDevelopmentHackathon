@@ -1,69 +1,100 @@
 // src/context/LenisContext.jsx
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
-import Lenis from 'lenis'; // Assuming Lenis is installed
+import Lenis from 'lenis'; // Ensure Lenis library is installed (e.g., npm install lenis)
 
-const LenisContext = createContext(null); // Initialize with null
+// Create the context that will hold the Lenis instance
+const LenisContext = createContext(null);
 
+// LenisProvider component to wrap your application or specific parts that need smooth scrolling
 export const LenisProvider = ({ children }) => {
-    // Use useState to hold the Lenis instance, allowing re-renders when it's ready
+    // State to store the Lenis instance. It will be null initially.
     const [lenisInstance, setLenisInstance] = useState(null);
-    const animationFrameIdRef = useRef(null); // Ref to store the requestAnimationFrame ID for cleanup
+    // Ref to hold the requestAnimationFrame ID for proper cleanup
+    const animationFrameIdRef = useRef(null);
 
+    // useEffect hook to handle Lenis initialization and cleanup
+    // Runs only once on component mount due to the empty dependency array []
     useEffect(() => {
-        // Only create a new Lenis instance if one doesn't already exist
-        // and ensure it's attached to the document.documentElement (html element)
+        // Check if a Lenis instance already exists to prevent re-initialization
+        // (useful in React StrictMode which might run effects twice in development)
         if (!lenisInstance) {
+            // Initialize a new Lenis instance
             const lenis = new Lenis({
-                wrapper: document.documentElement, // Explicitly set wrapper to html element
-                content: document.documentElement, // Explicitly set content to html element
-                lerp: 0.1, // Adjust for desired smoothness
-                duration: 1.2, // Default scroll duration
-                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Example easing
+                wrapper: document.documentElement, // Target the <html> element for global scroll control
+                content: document.documentElement, // Content that will be scrolled (also <html>)
+                lerp: 0.1,                       // Controls the smoothness (lower = smoother)
+                duration: 1.2,                   // Duration of scroll animations
+                easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // Custom easing function
             });
-            setLenisInstance(lenis); // Update state with the new instance
 
-            // IMPORTANT FIX: Call resize after initialization to ensure Lenis calculates scroll height
+            // Store the newly created Lenis instance in state
+            setLenisInstance(lenis);
+
+            // Crucial: Tell Lenis to re-measure the document's scrollable height.
+            // This is vital immediately after initialization and whenever content/layout changes.
             lenis.resize();
 
+            // Add a resize event listener to the window.
+            // This ensures Lenis updates its scroll calculations if the browser window is resized,
+            // which is essential for responsive layouts and preventing scroll issues.
+            const handleResize = () => {
+                lenis.resize();
+            };
+            window.addEventListener('resize', handleResize);
+
+            // Define the requestAnimationFrame (raf) loop.
+            // This loop continuously updates Lenis's internal state, enabling smooth scrolling.
             const raf = (time) => {
-                lenis.raf(time);
-                // Continue the animation loop only if the Lenis instance exists.
-                if (lenis) { // Use the local 'lenis' variable here
-                    animationFrameIdRef.current = requestAnimationFrame(raf);
-                }
+                lenis.raf(time); // Call Lenis's requestAnimationFrame handler
+                // Continue the loop by requesting the next animation frame
+                animationFrameIdRef.current = requestAnimationFrame(raf);
             };
 
-            // Start the initial animation loop and store its ID
+            // Start the initial animation frame loop
             animationFrameIdRef.current = requestAnimationFrame(raf);
+
+            // Cleanup function: This runs when the component unmounts.
+            // It's essential to prevent memory leaks and ensure proper unsubscription.
+            return () => {
+                // Cancel the ongoing animation frame loop
+                if (animationFrameIdRef.current) {
+                    cancelAnimationFrame(animationFrameIdRef.current);
+                    animationFrameIdRef.current = null;
+                }
+                // Remove the window resize event listener
+                window.removeEventListener('resize', handleResize);
+                // Destroy the Lenis instance to clean up its internal state and event listeners
+                if (lenis) { // Use the 'lenis' constant from this closure
+                    lenis.destroy();
+                }
+                // No need to set lenisInstance to null here, as the component is unmounting.
+            };
         }
+        // If lenisInstance already exists (e.g., due to React StrictMode's double render in dev),
+        // we don't re-initialize, and this part of the effect returns undefined.
+        return undefined;
+    }, []); // Empty dependency array ensures this effect runs ONLY ONCE on mount
 
-        // Cleanup function: runs when the component unmounts
-        return () => {
-            // Cancel the animation frame if its ID exists in the ref
-            if (animationFrameIdRef.current) {
-                cancelAnimationFrame(animationFrameIdRef.current);
-                animationFrameIdRef.current = null; // Clear the ref
-            }
-            // Destroy the Lenis instance if it exists
-            if (lenisInstance) { // Use the state variable here for cleanup
-                lenisInstance.destroy();
-                setLenisInstance(null); // Clear the state
-            }
-        };
-    }, []); // Empty dependency array: ensures this effect runs ONLY ONCE on mount
-
+    // Provide the Lenis instance to all children components via context
     return (
-        <LenisContext.Provider value={lenisInstance}> {/* Provide the state value */}
+        <LenisContext.Provider value={lenisInstance}>
             {children}
         </LenisContext.Provider>
     );
 };
 
+// Custom hook to easily access the Lenis instance from any child component
 export const useLenis = () => {
     const context = useContext(LenisContext);
-    // Optional: Add a check if useLenis is used outside a LenisProvider
-    // if (context === null) {
-    //   throw new Error('useLenis must be used within a LenisProvider');
-    // }
+    // Provide a helpful error message if the hook is used outside of the LenisProvider.
+    // This helps debug "Cannot convert object to primitive value" errors early.
+    if (context === null) {
+      console.error('useLenis must be used within a LenisProvider. Ensure LenisProvider wraps your component tree.');
+      // In a production environment, you might choose to throw an error for stricter behavior:
+      // throw new Error('useLenis must be used within a LenisProvider');
+    }
     return context;
 };
+
+// Export LenisProvider as the default export for easier import
+export default LenisProvider;

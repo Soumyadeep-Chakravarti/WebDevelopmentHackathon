@@ -1,10 +1,13 @@
 // src/pages/FeaturesPage.jsx
 import React from 'react';
 import { motion } from 'framer-motion';
-import Navbar from '../components/Navbar/Navbar'; // Correct import path for Navbar
-import Footer from '../components/Footer/Footer'; // Correct import path for Footer
-import DetailedFeatureCard from '../components/DetailedFeatureCard/DetailedFeatureCard';
-import { featuresData } from '../data/featuresData'; // Import centralized data
+
+const Navbar = React.lazy(() => import('../components/Navbar/Navbar.jsx')); // Lazy load Navbar
+const Footer = React.lazy(() => import('../components/Footer/Footer.jsx')); // Lazy load Footer
+
+import DetailedFeatureCard from '../components/DetailedFeatureCard/DetailedFeatureCard.jsx'; // Import your feature card component
+import featuresData from '../data/featuresData'; // Import your features data
+// Ensure featuresData is an array of feature objects
 
 const FeaturesPage = ({ setShowLogin }) => { // Accept setShowLogin prop for Navbar/CTA
     const headerVariants = {
@@ -41,7 +44,7 @@ const FeaturesPage = ({ setShowLogin }) => { // Accept setShowLogin prop for Nav
                 </section>
 
                 {/* Detailed Features List */}
-                <section className="px-4 sm:px-6 md:px-8 pb-20 flex flex-col gap-24">
+                <section className="px-4 sm:px-6 md:px-8 pb-20 flex flex-col gap-64">
                     {featuresData && featuresData.map((feature, index) => (
                         feature ? <DetailedFeatureCard key={index} feature={feature} index={index} /> : null
                     ))}

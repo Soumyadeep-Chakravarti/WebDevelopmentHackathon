@@ -1,8 +1,8 @@
-// src/data/featuresData.js
+// src/data/featuresData.jsx (REMINDER: This file should be renamed to .jsx)
 import React from 'react';
 import { Zap, Shield, Cloud, Settings, Layout, LifeBuoy } from 'lucide-react';
 
-// Import individual feature description components
+// Import individual feature description components - CORRECTED PATHS
 import PerformanceDescription from '../components/LandingFeatures/descriptions/PerformanceDescription';
 import SecurityDescription from '../components/LandingFeatures/descriptions/SecurityDescription';
 import CloudIntegrationDescription from '../components/LandingFeatures/descriptions/CloudIntegrationDescription';
@@ -10,9 +10,9 @@ import ScalableArchitectureDescription from '../components/LandingFeatures/descr
 import UserInterfaceDescription from '../components/LandingFeatures/descriptions/UserInterfaceDescription';
 import SupportDescription from '../components/LandingFeatures/descriptions/SupportDescription';
 
-export const featuresData = [
+const featuresData = [
     {
-        icon: <Zap size={36} className="text-primary" />,
+        icon: < Zap size={36} className="text-primary" />,
         title: "Blazing Fast Performance",
         description: <PerformanceDescription />,
         image: "https://placehold.co/600x400/87CEEB/FFFFFF/png?text=Performance+Image", // Placeholder image
@@ -48,3 +48,5 @@ export const featuresData = [
         image: "https://placehold.co/600x400/DDA0DD/000000/png?text=Support+Image", // Placeholder image
     },
 ];
+
+export default featuresData;

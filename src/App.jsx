@@ -2,7 +2,7 @@
 import React, { useState, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-// Lazy load your page components
+// Lazy load your page components (This is good for performance and should remain lazy)
 const LandingPage = lazy(() => import('./pages/LandingPage.jsx'));
 const FeaturesPage = lazy(() => import('./pages/FeaturesPage.jsx'));
 const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
@@ -10,7 +10,8 @@ const Login = lazy(() => import('./components/Login/Login.jsx'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx'));
 const LearnMorePage = lazy(() => import('./pages/LearnMorePage.jsx'));
 
-// Import Context Providers
+// CRITICAL FIX: Import Context Providers DIRECTLY. DO NOT lazy load them.
+// They must be available synchronously at the root of your application's component tree.
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { LenisProvider } from './context/LenisContext.jsx';
 
@@ -20,16 +21,16 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      {/* ThemeProvider and LenisProvider are now directly rendered and available immediately */}
       <ThemeProvider>
         <LenisProvider>
-          {/* Use Suspense to wrap your Routes. A fallback UI will be shown while components load. */}
+          {/* Suspense still wraps the Routes because page components are lazy loaded */}
           <Suspense fallback={<div className="flex justify-center items-center min-h-screen text-text-primary">Loading application...</div>}>
             <Routes>
               <Route path="/" element={<LandingPage setShowLogin={setShowLogin} />} />
               <Route path="/features" element={<FeaturesPage setShowLogin={setShowLogin} />} />
               <Route path="/contact" element={<ContactPage setShowLogin={setShowLogin} />} />
               <Route path="/login" element={<Login setShowLogin={setShowLogin} isStandalonePage={true} />} />
-              {/* CORRECTED: Pass setShowLogin to SignUpPage */}
               <Route path="/signup" element={<SignUpPage setShowLogin={setShowLogin} />} />
               <Route path="/learn-more" element={<LearnMorePage setShowLogin={setShowLogin} />} />
             </Routes>

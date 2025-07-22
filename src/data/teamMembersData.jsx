@@ -37,3 +37,6 @@ export const teamMembersData = [
         borderColor: "border-secondary"
     },
 ];
+
+
+export default teamMembersData;
