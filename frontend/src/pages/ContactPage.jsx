@@ -50,30 +50,6 @@ const ContactPage = ({ setShowLogin }) => { // Accept setShowLogin prop
         setFormData({ name: '', email: '', subject: '', message: '' }); // Clear form
     };
 
-    const onSubmit = async (event) => {
-        event.preventDefault();
-        const formData = new FormData(event.target);
-
-        formData.append("access_key", "bc870515-ec72-4735-8ae0-d7cbd1193673");
-
-        const object = Object.fromEntries(formData);
-        const json = JSON.stringify(object);
-
-        const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-        },
-        body: json
-        }).then((res) => res.json());
-
-        if (res.success) {
-        console.log("Success", res);
-        }
-    };
-
-
     return (
         <div className="w-full min-h-screen bg-background text-text-primary">
             <Navbar setShowLogin={setShowLogin} /> {/* Pass setShowLogin to Navbar */}
@@ -112,7 +88,7 @@ const ContactPage = ({ setShowLogin }) => { // Accept setShowLogin prop
                     {/* Contact Form */}
                     <motion.div className="bg-card-background p-8 rounded-xl shadow-lg border border-border-color/50" variants={itemVariants}>
                         <h2 className="text-3xl font-bold text-text-primary mb-6">Send Us a Message</h2>
-                        <form onSubmit={handleSubmit} onSubmit={onSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">Your Name</label>
                                 <input
