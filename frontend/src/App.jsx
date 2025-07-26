@@ -9,12 +9,12 @@ const ContactPage = lazy(() => import('./pages/ContactPage.jsx'));
 const Login = lazy(() => import('./components/Login/Login.jsx'));
 const SignUpPage = lazy(() => import('./pages/SignUpPage.jsx'));
 const LearnMorePage = lazy(() => import('./pages/LearnMorePage.jsx'));
+const Maps = lazy(() => import('./pages/Maps.jsx'));
 
 // CRITICAL FIX: Import Context Providers DIRECTLY. DO NOT lazy load them.
 // They must be available synchronously at the root of your application's component tree.
 import { ThemeProvider } from './context/ThemeContext.jsx';
 import { LenisProvider } from './context/LenisContext.jsx';
-
 
 export default function App() {
   const [showLogin, setShowLogin] = useState(false);
@@ -33,6 +33,7 @@ export default function App() {
               <Route path="/login" element={<Login setShowLogin={setShowLogin} isStandalonePage={true} />} />
               <Route path="/signup" element={<SignUpPage setShowLogin={setShowLogin} />} />
               <Route path="/learn-more" element={<LearnMorePage setShowLogin={setShowLogin} />} />
+              <Route path="/Maps" element={<Maps setShowLogin={setShowLogin} />} />
             </Routes>
             {/* Render Login as an overlay ONLY if showLogin is true AND it's not a standalone page route */}
             {!window.location.pathname.includes('/login') && !window.location.pathname.includes('/signup') && showLogin && (
