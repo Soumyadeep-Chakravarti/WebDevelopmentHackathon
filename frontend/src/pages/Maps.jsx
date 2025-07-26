@@ -1,13 +1,14 @@
 import leaflet from 'leaflet';
 import { useRef, useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
 import { renderToString } from 'react-dom/server';
 
 export default function GPSMapWithReactIcon() {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
-  const [position, setPosition] = useState(null);
+  const [position, setPosition] = useState(null); // This was missing
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -20,9 +21,8 @@ export default function GPSMapWithReactIcon() {
     }
 
     const createCustomIcon = () => {
-      // Render the React icon to HTML string
       const iconString = renderToString(
-        <div style={{ color: '#ff0000', fontSize: '24px' }}>
+        <div className="text-red-500 text-2xl">
           <FaMapMarkerAlt />
         </div>
       );
@@ -40,7 +40,7 @@ export default function GPSMapWithReactIcon() {
         (pos) => {
           const { latitude, longitude } = pos.coords;
           const newPos = [latitude, longitude];
-          setPosition(newPos);
+          setPosition(newPos); // This updates the position state
 
           mapRef.current.setView(newPos, 13);
           
@@ -50,7 +50,7 @@ export default function GPSMapWithReactIcon() {
             markerRef.current = leaflet.marker(newPos, {
               icon: createCustomIcon()
             }).addTo(mapRef.current)
-              .bindPopup("Your location");
+              .bindPopup("Your current location");
           }
         },
         (err) => {
@@ -73,9 +73,42 @@ export default function GPSMapWithReactIcon() {
     }
   }, []);
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    console.log('Searching for:', searchQuery);
+    // Add geocoding implementation here
+  };
+
   return (
-    <div style={{ height: '100vh', width: '100%' }}>
-      <div id="map" style={{ height: '100%', width: '100%' }} />
+    <div className="relative h-screen w-full">
+      {/* Search Bar */}
+      <div className="absolute top-4 left-4 right-4 z-[1000] max-w-md mx-auto">
+        <form onSubmit={handleSearch} className="flex shadow-lg rounded-full overflow-hidden">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search location..."
+            className="flex-grow p-2 pl-4 focus:outline-none bg-gray-100 text-gray-800 placeholder-gray-500 text-sm"
+          />
+          <button 
+            type="submit" 
+            className="bg-gray-300 text-gray-700 p-2 px-4 hover:bg-gray-400 transition-colors"
+          >
+            <FaSearch className="text-gray-600" />
+          </button>
+        </form>
+      </div>
+
+      <div id="map" className="h-full w-full" />
+      
+      {/* Only show position display if position exists */}
+      {position && (
+        <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-md z-[1000]">
+          <p>Latitude: {position[0].toFixed(5)}</p>
+          <p>Longitude: {position[1].toFixed(5)}</p>
+        </div>
+      )}
     </div>
   );
 }
