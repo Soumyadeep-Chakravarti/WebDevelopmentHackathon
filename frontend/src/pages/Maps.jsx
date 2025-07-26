@@ -19,7 +19,6 @@ export default function GPSMapWithReactIcon() {
       }).addTo(mapRef.current);
     }
 
-    // Create a custom icon using React icon
     const createCustomIcon = () => {
       // Render the React icon to HTML string
       const iconString = renderToString(
