@@ -2,6 +2,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+import { useRef } from 'react';
 
 const Navbar = React.lazy(() => import('../components/Navbar/Navbar.jsx')); // Lazy load Navbar
 const Footer = React.lazy(() => import('../components/Footer/Footer.jsx')); // Lazy load Footer
@@ -42,13 +44,37 @@ const ContactPage = ({ setShowLogin }) => { // Accept setShowLogin prop
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    const sendEmail = (e) => {
+        e.preventDefault();
+
+        emailjs
+        .sendForm(serviceID, templateID, form.current, {
+            publicKey: publicKey,
+        })
+        .then(
+            () => {
+            console.log('SUCCESS!');
+            },
+            (error) => {
+            console.log('FAILED...', error.text);
+            },
+        );
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        sendEmail(e);
         console.log('Contact Form Submitted:', formData);
         // Here you would typically send this data to a backend service
         alert('Thank you for your message! We will get back to you soon.');
         setFormData({ name: '', email: '', subject: '', message: '' }); // Clear form
     };
+
+    const form = useRef();
+
+    const publicKey = 'LJUpXNOJo5BlUAWbK'; // Replace with your actual EmailJS public key
+    const serviceID = 'service_dux8itb'; // Replace with your actual service ID
+    const templateID = 'template_5oudoyc'; // Replace with your actual template ID
 
     return (
         <div className="w-full min-h-screen bg-background text-text-primary">
@@ -88,7 +114,7 @@ const ContactPage = ({ setShowLogin }) => { // Accept setShowLogin prop
                     {/* Contact Form */}
                     <motion.div className="bg-card-background p-8 rounded-xl shadow-lg border border-border-color/50" variants={itemVariants}>
                         <h2 className="text-3xl font-bold text-text-primary mb-6">Send Us a Message</h2>
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                        <form onSubmit={handleSubmit} ref={form} className="space-y-6">
                             <div>
                                 <label htmlFor="name" className="block text-sm font-medium text-text-secondary mb-2">Your Name</label>
                                 <input
