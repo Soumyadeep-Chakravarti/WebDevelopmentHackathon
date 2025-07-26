@@ -1,11 +1,9 @@
 import React from 'react'
 
-function Maps() {
+export default function Maps() {
   return (
-    <div>
+     <div id="map">
       
-    </div>
+     </div>
   )
 }
-
-export default Maps
