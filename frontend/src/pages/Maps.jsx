@@ -1,14 +1,16 @@
 import leaflet from 'leaflet';
 import { useRef, useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { FaMapMarkerAlt, FaSearch } from 'react-icons/fa';
+import { FaMapMarkerAlt, FaSearch, FaSpinner } from 'react-icons/fa';
 import { renderToString } from 'react-dom/server';
 
 export default function GPSMapWithReactIcon() {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
-  const [position, setPosition] = useState(null); // This was missing
+  const [position, setPosition] = useState(null); 
   const [searchQuery, setSearchQuery] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchError, setSearchError] = useState(null);
 
   useEffect(() => {
     if (!mapRef.current) {
@@ -40,7 +42,7 @@ export default function GPSMapWithReactIcon() {
         (pos) => {
           const { latitude, longitude } = pos.coords;
           const newPos = [latitude, longitude];
-          setPosition(newPos); // This updates the position state
+          setPosition(newPos); 
 
           mapRef.current.setView(newPos, 13);
           
@@ -73,15 +75,72 @@ export default function GPSMapWithReactIcon() {
     }
   }, []);
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    console.log('Searching for:', searchQuery);
-    // Add geocoding implementation here
+    if (!searchQuery.trim()) return;
+    
+    setIsSearching(true);
+    setSearchError(null);
+    
+    try {
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`
+      );
+      
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      
+      const data = await response.json();
+      
+      if (data.length === 0) {
+        throw new Error('Location not found');
+      }
+      
+      // Take the first result
+      const result = data[0];
+      const newPos = [parseFloat(result.lat), parseFloat(result.lon)];
+      
+      setPosition(newPos);
+      mapRef.current.setView(newPos, 13);
+      
+      if (markerRef.current) {
+        markerRef.current.setLatLng(newPos);
+      } else {
+        markerRef.current = leaflet.marker(newPos, {
+          icon: createCustomIcon()
+        }).addTo(mapRef.current);
+      }
+      
+      markerRef.current
+        .setPopupContent(`Searched location: ${result.display_name || searchQuery}`)
+        .openPopup();
+      
+    } catch (error) {
+      console.error('Search error:', error);
+      setSearchError(error.message);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const createCustomIcon = () => {
+    const iconString = renderToString(
+      <div className="text-red-500 text-2xl">
+        <FaMapMarkerAlt />
+      </div>
+    );
+    
+    return leaflet.divIcon({
+      html: iconString,
+      className: 'custom-marker-icon',
+      iconSize: [24, 24],
+      iconAnchor: [12, 24]
+    });
   };
 
   return (
     <div className="relative h-screen w-full">
-      {/* Search Bar */}
       <div className="absolute top-4 left-4 right-4 z-[1000] max-w-md mx-auto">
         <form onSubmit={handleSearch} className="flex shadow-lg rounded-full overflow-hidden">
           <input
@@ -93,16 +152,24 @@ export default function GPSMapWithReactIcon() {
           />
           <button 
             type="submit" 
-            className="bg-gray-300 text-gray-700 p-2 px-4 hover:bg-gray-400 transition-colors"
+            className="bg-gray-300 text-gray-700 p-2 px-4 hover:bg-gray-400 transition-colors flex items-center justify-center"
+            disabled={isSearching}
           >
-            <FaSearch className="text-gray-600" />
+            {isSearching ? (
+              <FaSpinner className="text-gray-600 animate-spin" />
+            ) : (
+              <FaSearch className="text-gray-600" />
+            )}
           </button>
         </form>
+        {searchError && (
+          <div className="mt-2 p-2 bg-red-100 text-red-700 text-sm rounded">
+            {searchError}
+          </div>
+        )}
       </div>
 
       <div id="map" className="h-full w-full" />
-      
-      {/* Only show position display if position exists */}
       {position && (
         <div className="absolute bottom-4 left-4 bg-white p-3 rounded-lg shadow-md z-[1000]">
           <p>Latitude: {position[0].toFixed(5)}</p>
